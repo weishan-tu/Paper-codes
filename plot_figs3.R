@@ -51,29 +51,29 @@ network_all$invasion <- ifelse(network_all$invasion == "N", "Control", "Invaded"
 
 figs3d <- network_all%>%ggplot(aes(x=invasion, y=Connectance  , color=invasion)) +
   geom_jitter(position=position_jitter(0.25), alpha=0.4) +
-  geom_boxplot(width = 0.5, alpha = 0.7) +  # 箱线图透明度
+  geom_boxplot(width = 0.5, alpha = 0.7) +  # 
   scale_color_manual(values=c("#3498DB", "#F39C12")) +
   xlab("") + ylab("Connectance (z-scores)")+
   stat_compare_means(method = "kruskal.test",label="p.signif", label.x = 1.5)+
-  facet_wrap(~ group_area) +         # 按gender分面
+  facet_wrap(~ group_area) +         # 
   labs(title = "Connectance (z-scores)") 
 
 figs3e <- network_all%>%ggplot(aes(x=invasion, y=Modularity  , color=invasion)) +
   geom_jitter(position=position_jitter(0.25), alpha=0.4) +
-  geom_boxplot(width = 0.5, alpha = 0.7) +  # 箱线图透明度
+  geom_boxplot(width = 0.5, alpha = 0.7) +  # 
   scale_color_manual(values=c("#3498DB", "#F39C12")) +
   xlab("") + ylab("Modularity (z-scores)")+
   stat_compare_means(method = "kruskal.test",label="p.signif", label.x = 1.5)+
-  facet_wrap(~ group_area) +         # 按gender分面
+  facet_wrap(~ group_area) +         # 
   labs(title = "Modularity (z-scores)") 
 
 figs3f <- network_all%>%ggplot(aes(x=invasion, y=Nestedness  , color=invasion)) +
   geom_jitter(position=position_jitter(0.25), alpha=0.4) +
-  geom_boxplot(width = 0.5, alpha = 0.7) +  # 箱线图透明度
+  geom_boxplot(width = 0.5, alpha = 0.7) +  # 
   scale_color_manual(values=c("#3498DB", "#F39C12")) +
   xlab("") + ylab("Nestdeness (z-scores)")+
   stat_compare_means(method = "kruskal.test",label="p.signif", label.x = 1.5)+
-  facet_wrap(~ group_area) +         # 按gender分面
+  facet_wrap(~ group_area) +         # 
   labs(title = "Nestdeness (z-scores)") 
 
 
