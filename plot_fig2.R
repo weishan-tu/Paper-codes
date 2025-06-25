@@ -3,6 +3,7 @@ library(tidyverse)
 library(plot3D)
 library(cowplot)
 library(bipartite)
+library(ggpubr)
 #plot fig2 Comparison of the predator‒prey network and diet between the invaded and control ponds
 #load data
 network_dat <- read_csv("network_data.csv")
@@ -10,22 +11,18 @@ network_dat <- read_csv("network_data.csv")
 plot3d_netw <- network_dat%>%filter(!is.na(Connectance))
 plot3d_netw$invasion <- as.factor(plot3d_netw$invasion)
 Cairo::CairoPNG(
-  filename = paste0("figure/fig2a_network_3d.png "), # 文件名称
-  width = 10,           # 宽
-  height = 10,          # 高
-  units = "in",        # 单位
-  dpi = 600)           # 分辨率
+  filename = paste0("figure/fig2a_network_3d.png "), width = 10, height = 10, units = "in",dpi = 600)           # 
 
 scatter3D(
   x = plot3d_netw$Connectance,
   y = plot3d_netw$Nestedness,
   z = plot3d_netw$Modularity,
-  colvar = as.numeric(dat$invasion), # 颜色映射变量
-  col = c("#1D91C0", "#FF8000"), # 自定义颜色
+  colvar = as.numeric(plot3d_netw$invasion), # 
+  col = c("#1D91C0", "#FF8000"), # 
   pch = 16,
-  theta = 30,               # 水平旋转角度
-  phi = 20,                 # 垂直倾斜角度
-  bty = "b2",                # 背景样式（"g"=网格）
+  theta = 30,               #
+  phi = 20,                 # 
+  bty = "b2",                # 
   xlab = "Connectance",
   ylab = "Nestedness",
   zlab = "Modularity",
@@ -39,7 +36,7 @@ ex_site1_matrix <- ex_site1%>%
   reshape2::acast(formula = prey~species,fun.aggregate = sum,
                   value.var = "RRA")%>%
   as.data.frame()
-seq.high <- colnames(site_matrix)
+seq.high <- colnames(ex_site1_matrix)
 site_matrix_prec <- ex_site1%>% 
   group_by(species)%>%dplyr::arrange( desc(RRA))%>%
   ungroup()%>%
@@ -64,7 +61,7 @@ ex_site2_matrix <- ex_site2%>%
   reshape2::acast(formula = prey~species,fun.aggregate = sum,
                   value.var = "RRA")%>%
   as.data.frame()
-seq.high <- colnames(site_matrix)
+seq.high <- colnames(ex_site2_matrix)
 site_matrix_prec <- ex_site2%>% 
   group_by(species)%>%dplyr::arrange( desc(RRA))%>%
   ungroup()%>%
@@ -86,7 +83,13 @@ dev.off()
 diet_change_dat <- read_csv("fig2b-c_diet_change_data.csv")
 bullfrog_m <- diet_change_dat%>%filter(species=="Lithobates_catesbeianus")
 diet_change_nat <- diet_change_dat%>%filter(species%in%c("Fejervarya_multistriata","Pelophylax_nigromaculatus","Microhyla_fissipes","Bufo_gargarizans"))
-
+shape_list <- c(
+  "Fejervarya_multistriata"=16,"Microhyla_fissipes"=0,
+  "Pelophylax_nigromaculatus"=1,"Pelophylax_plancyi"=8,
+  "Bufo_gargarizans"=3,"Rana_zhenhaiensis"=4 ,
+  "Hylarana_latouchii"=5,"Hyla_chinensis"=6,         
+  "Quasipaa_spinosa"=7,"Lithobates_catesbeianus"=17
+)
 diet_change_nat$species <- factor(diet_change_nat$species,levels = c("Fejervarya_multistriata","Pelophylax_nigromaculatus","Microhyla_fissipes","Bufo_gargarizans"))
 fig2b <- diet_change_nat%>%
   ggplot(aes(x=species, y=log10(prey_no) , color=invasion,shape=species)) +
